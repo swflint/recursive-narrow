@@ -1,4 +1,4 @@
-;;; recursive-narrow.el --- narrow-to-region that operates recursively
+;;; recursive-narrow.el --- Improved narrow-to-region that operates recursively
 
 ;; Copyright (C) 2010 Nathaniel Flath <flat0103@gmail.com>
 
@@ -7,6 +7,7 @@
 ;; Version: 20140811.1546
 ;; X-Original-Version: 20140801.1400
 ;; X-Original-Version: 1.3
+;; Package-Requires: ((emacs "24.3"))
 
 ;; This file is not part of GNU Emacs.
 
@@ -52,12 +53,13 @@
 
 (defcustom recursive-narrow-dwim-functions nil
   "Functions to try for narrowing.
-These functions do not get any arguments. They should narrow and
+These functions do not get any arguments.  They should narrow and
 return non-nil if applicable."
   :type 'hook
   :group 'recursive-narrow)
 
-(defvar-local recursive-narrow-settings nil "List of buffer visibility settings.")
+(defvar-local recursive-narrow-settings nil
+  "List of buffer visibility settings.")
 
 (defmacro recursive-narrow-save-position (body &optional unchanged)
   "Execute BODY and save the buffer visibility if changed.
@@ -72,8 +74,8 @@ Executes UNCHANGED if the buffer visibility has not changed."
 
 (defun recursive-narrow-or-widen-dwim ()
   "If the region is active, narrow to that region.
-Otherwise, narrow to the current function. If this has no effect,
-widen the buffer. You can add more functions to
+Otherwise, narrow to the current function.  If this has no effect,
+widen the buffer.  You can add more functions to
 `recursive-narrow-dwim-functions'."
   (interactive)
   (recursive-narrow-save-position
@@ -90,7 +92,7 @@ widen the buffer. You can add more functions to
   "Replacement of `narrow-to-region'.
 Performs the exact same function but also allows
 `recursive-widen' to remove just one call to
-`recursive-narrow-to-region'. START and END define the region."
+`recursive-narrow-to-region'.  START and END define the region."
   (interactive "r")
   (recursive-narrow-save-position (narrow-to-region start end)))
 
@@ -98,7 +100,7 @@ Performs the exact same function but also allows
   "Replacement of `narrow-to-defun'.
 Performs the exact same function but also allows
 `recursive-widen' to remove just one call to
-`recursive-narrow-to-region'. Optional ARG is ignored."
+`recursive-narrow-to-region'.  Optional ARG is ignored."
   (interactive)
   (recursive-narrow-save-position
    (narrow-to-defun)))
