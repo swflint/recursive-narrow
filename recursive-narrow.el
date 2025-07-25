@@ -24,7 +24,7 @@
 ;; to your .emacs file:
 ;;
 ;; (require 'recursive-narrow)
-;;
+;; (recursive-narrow-mode)
 
 ;;; License:
 
@@ -114,9 +114,19 @@ Performs the exact same function but also allows
           (recenter))
       (widen))))
 
+(defvar recursive-narrow-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "<remap> <narrow-to-region>") #'recursive-narrow-or-widen-dwim)
+    (define-key map (kbd "<remap> <widen>") #'recursive-widen)
+    map)
+  "Keymap for `recursive-narrow-mode'.")
 
-(global-set-key (kbd "C-x n w") 'recursive-widen)
-(global-set-key (kbd "C-x n n") 'recursive-narrow-or-widen-dwim)
+;;;###autoload
+(define-minor-mode recursive-narrow-mode
+  "Enable recursive narrowing."
+  :global t
+  :keymap recursive-narrow-mode-map
+  :lighter " (||)")
 
 (provide 'recursive-narrow)
 
